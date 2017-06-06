@@ -39,8 +39,10 @@ module Galette
       version_spec = Gem::Requirement.new(version_spec) unless version_spec.is_a?(Gem::Requirement)
       bitmap = versions.select do |version|
         !version.none? && version_spec.satisfied_by?(Gem::Version.new(version.version))
-      end
-      p bitmap
+      end.map do |version|
+        version.id
+      end.inject(:|)
+      Galette::Requirement.new(self, bitmap)
     end
 
     def number_of_versions

@@ -26,7 +26,7 @@ class ResolutionTest < Minitest::Test
     assert_equal 'rack', resolution[0].specification.name
   end
 
-  def test_multiple_version_anyrequirement
+  def test_multiple_version_any_requirement
     specification = Galette::Specification.new('rack') do |s|
       s.version '2.0'
       s.version '1.0'
@@ -35,6 +35,31 @@ class ResolutionTest < Minitest::Test
     resolution = Galette::Resolution.new([specification], [requirement]).resolve
     assert_equal 1, resolution.length
     assert_equal '2.0', resolution[0].version
+    assert_equal 'rack', resolution[0].specification.name
+  end
+
+  def test_single_version_exact_requirement
+    specification = Galette::Specification.new('rack') do |s|
+      s.version '1.0'
+    end
+    requirement = specification.semver_requirement('1.0')
+    resolution = Galette::Resolution.new([specification], [requirement]).resolve
+
+    assert_equal 1, resolution.length
+    assert_equal '1.0', resolution[0].version
+    assert_equal 'rack', resolution[0].specification.name
+  end
+
+  def test_multiple_version_exact_requirement
+    specification = Galette::Specification.new('rack') do |s|
+      s.version '2.0'
+      s.version '1.0'
+      s.version '0.1'
+    end
+    requirement = specification.semver_requirement('1.0')
+    resolution = Galette::Resolution.new([specification], [requirement]).resolve
+    assert_equal 1, resolution.length
+    assert_equal '1.0', resolution[0].version
     assert_equal 'rack', resolution[0].specification.name
   end
 end
