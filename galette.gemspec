@@ -1,11 +1,8 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'galette/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "galette"
-  spec.version       = Galette::VERSION
+  spec.version       = "0.1.0"
   spec.authors       = ["John Hawthorn"]
   spec.email         = ["john.hawthorn@gmail.com"]
 
