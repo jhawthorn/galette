@@ -42,7 +42,7 @@ module Galette
       end.map do |version|
         version.id
       end.inject(:|)
-      Galette::Requirement.new(self, bitmap)
+      Galette::Availability.new(self, bitmap)
     end
 
     def number_of_versions
