@@ -18,6 +18,10 @@ module Galette
       self.class.new(new_hash.values)
     end
 
+    def valid?
+      !@hash.values.any?(&:none?)
+    end
+
     def for(specification)
       @hash[specification]
     end

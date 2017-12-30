@@ -62,4 +62,21 @@ class ResolutionTest < Minitest::Test
     assert_equal '1.0', resolution[0].version
     assert_equal 'rack', resolution[0].specification.name
   end
+
+  def test_multiple_version_multiple_gems
+    rack = Galette::Specification.new('rack') do |s|
+      s.version '2.0'
+      s.version '1.1'
+      s.version '1.0'
+    end
+    rails = Galette::Specification.new('rails') do |s|
+      s.version '2.0', requirements: [rack.requirement_semver('~> 1.0')]
+      s.version '1.0', requirements: [rack.requirement_semver('~> 1.0')]
+    end
+    requirement = rails.requirement_semver
+    resolution = Galette::Resolution.new([rails, rack], [requirement]).resolve
+    assert_equal 2, resolution.length
+    assert_equal '2.0', resolution[0].version
+    assert_equal 'rails', resolution[0].specification.name
+  end
 end

@@ -6,7 +6,11 @@ module Galette
       @specification = specification
       @id = id
       @version = version
-      @requirements = requirements
+      @requirements = AvailabilitySet.new(requirements + [availability_self])
+    end
+
+    def availability_self
+      Galette::Availability.new(specification, id)
     end
 
     # Does this "version" represent "none" ie. not required
