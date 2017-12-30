@@ -7,8 +7,8 @@ module Galette
       @bitmap = bitmap
     end
 
-    def restrict(requirements)
-      Availability.new(specification, bitmap & requirements.map(&:bitmap).inject(:&))
+    def &(other)
+      self.class.new(specification, bitmap & other.bitmap)
     end
 
     def versions
