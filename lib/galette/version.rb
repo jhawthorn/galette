@@ -13,5 +13,9 @@ module Galette
     def none?
       version == nil
     end
+
+    def inspect
+      "#<#{self.class} #{specification.name} #{version ? "=" + version : "UNNEEDED"}>"
+    end
   end
 end
