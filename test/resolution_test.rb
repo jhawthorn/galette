@@ -18,7 +18,7 @@ class ResolutionTest < Minitest::Test
     specification = Galette::Specification.new('rack') do |s|
       s.version '1.0'
     end
-    requirement = specification.semver_requirement
+    requirement = specification.requirement_semver
     resolution = Galette::Resolution.new([specification], [requirement]).resolve
 
     assert_equal 1, resolution.length
@@ -31,7 +31,7 @@ class ResolutionTest < Minitest::Test
       s.version '2.0'
       s.version '1.0'
     end
-    requirement = specification.semver_requirement
+    requirement = specification.requirement_semver
     resolution = Galette::Resolution.new([specification], [requirement]).resolve
     assert_equal 1, resolution.length
     assert_equal '2.0', resolution[0].version
@@ -42,7 +42,7 @@ class ResolutionTest < Minitest::Test
     specification = Galette::Specification.new('rack') do |s|
       s.version '1.0'
     end
-    requirement = specification.semver_requirement('1.0')
+    requirement = specification.requirement_semver('1.0')
     resolution = Galette::Resolution.new([specification], [requirement]).resolve
 
     assert_equal 1, resolution.length
@@ -56,7 +56,7 @@ class ResolutionTest < Minitest::Test
       s.version '1.0'
       s.version '0.1'
     end
-    requirement = specification.semver_requirement('1.0')
+    requirement = specification.requirement_semver('1.0')
     resolution = Galette::Resolution.new([specification], [requirement]).resolve
     assert_equal 1, resolution.length
     assert_equal '1.0', resolution[0].version

@@ -2,9 +2,9 @@ require "rubygems/version"
 require "galette/availability"
 
 module Galette
-  # A specification represents all available versions of a library, including
-  # those the resolver has already ruled out.
-  # This object is used without modification throughout the resolving process.
+  # A specification represents an immutable description of a library, and all
+  # its available versions.
+  # This object is referenced (but never modified) throughout the resolving process.
   class Specification
     class DSL
       def initialize(specification)
@@ -35,7 +35,7 @@ module Galette
       Galette::Availability.new(self, (1 << (number_of_versions + 1)) - 1)
     end
 
-    def semver_requirement(version_spec=nil)
+    def requirement_semver(version_spec=nil)
       version_spec = Gem::Requirement.new(version_spec) unless version_spec.is_a?(Gem::Requirement)
       bitmap = versions.select do |version|
         !version.none? && version_spec.satisfied_by?(Gem::Version.new(version.version))
