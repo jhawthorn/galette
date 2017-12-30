@@ -10,12 +10,12 @@ module Galette
 
     def resolve
       return [] if requirements.empty?
+      requirements_by_specification =
+        requirements.group_by(&:specification)
       availabilities.map do |availability|
         specification = availability.specification
-        requirements.each do |r|
-          next unless r.specification == specification
-          availability = Availability.new(specification, availability.bitmap & r.bitmap)
-        end
+        availability_requirements = requirements_by_specification.fetch(specification, [])
+        availability = availability.restrict(availability_requirements)
         availability.versions[0]
       end
     end

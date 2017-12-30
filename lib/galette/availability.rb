@@ -7,6 +7,10 @@ module Galette
       @bitmap = bitmap
     end
 
+    def restrict(requirements)
+      Availability.new(specification, bitmap & requirements.map(&:bitmap).inject(:&))
+    end
+
     def versions
       @specification.versions.select do |version|
         !(version.id & bitmap).zero?
