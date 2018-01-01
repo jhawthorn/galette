@@ -57,5 +57,16 @@ module Galette
       end
       all_gems
     end
+
+    def self.all_versions
+      uri = URI.parse('https://index.rubygems.org/versions')
+      response = Net::HTTP.get_response(uri)
+      raise "unable to fetch full version list" unless response.is_a?(Net::HTTPSuccess)
+      gems = response.body.split("---\n", 2)[1]
+      gems.lines.map do |line|
+        gem, version, _ = line.split(' ')
+        [gem, version.split(',')]
+      end.to_h
+    end
   end
 end
