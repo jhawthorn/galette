@@ -25,7 +25,7 @@ module Galette
 
     def initialize(name)
       @name = name
-      @versions = [Version.new(self, 1, nil, [])]
+      @versions = [Version.none(self)]
       yield DSL.new(self)
 
       @versions.freeze
@@ -40,9 +40,8 @@ module Galette
       bitmap = versions.select do |version|
         !version.none? && version_spec.satisfied_by?(Gem::Version.new(version.version))
       end.map do |version|
-        version.id
+        version.to_availability
       end.inject(:|)
-      Galette::Availability.new(self, bitmap)
     end
 
     def number_of_versions

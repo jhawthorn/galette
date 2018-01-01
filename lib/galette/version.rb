@@ -6,10 +6,14 @@ module Galette
       @specification = specification
       @id = id
       @version = version
-      @requirements = AvailabilitySet.new(requirements + [availability_self])
+      @requirements = AvailabilitySet.new(requirements + [to_availability])
     end
 
-    def availability_self
+    def self.none(specification)
+      new(specification, 1, nil, [])
+    end
+
+    def to_availability
       Galette::Availability.new(specification, id)
     end
 

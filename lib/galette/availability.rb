@@ -11,6 +11,10 @@ module Galette
       self.class.new(specification, bitmap & other.bitmap)
     end
 
+    def |(other)
+      self.class.new(specification, bitmap | other.bitmap)
+    end
+
     def versions
       @specification.versions.select do |version|
         !(version.id & bitmap).zero?
