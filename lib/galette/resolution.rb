@@ -28,6 +28,7 @@ module Galette
 
     def resolve
       _resolve(@availabilities).map do |availability|
+        # It should return exactly one version
         availability.versions[0]
       end.reject do |version|
         version.none?
