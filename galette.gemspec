@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["John Hawthorn"]
   spec.email         = ["john.hawthorn@gmail.com"]
 
-  spec.summary       = %q{A version resolver}
-  spec.description   = %q{A generic version resolver, intended to resolve compatible gem versions quickly}
+  spec.summary       = %q{A dependency resolver}
+  spec.description   = %q{A dependency resolver, intended to resolve compatible gem versions quickly}
   spec.homepage      = "https://github.com/jhawthorn/galette"
   spec.license       = "MIT"
 

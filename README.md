@@ -1,8 +1,8 @@
 # Galette
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/galette`. To experiment with that code, run `bin/console` for an interactive prompt.
+Dependency resolution algorithm in ruby.
 
-TODO: Delete this and the text above, and describe your gem
+It could be an alternative to [Bundler](https://github.com/bundler/bundler) and CocoaPods's [Molinillo](https://github.com/CocoaPods/Molinillo) algorithm. It's currently just an experiment.
 
 ## Installation
 
