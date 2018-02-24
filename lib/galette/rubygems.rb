@@ -43,8 +43,8 @@ module Galette
 
     def self.fetch_all_gems(name)
       all_gems = {
-        'rubygems' => nil,
-        'ruby' => nil
+        'rubygems' => [Gem::VERSION],
+        'ruby' => [RUBY_VERSION]
       }
       queue = [name]
       while !queue.empty?
