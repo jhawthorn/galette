@@ -11,29 +11,32 @@ module Galette
         puts uri
         response = Net::HTTP.get_response(uri)
         raise "unable to fetch #{name}" unless response.is_a?(Net::HTTPSuccess)
-        parse(response.body)
+        @versions = parse(response.body)
       end
 
       def all_dependant_gems
-        @all_dependant_gems ||=
-          versions.values.flatten(1).map(&:first).uniq
+        versions.values.flatten(1).map(&:first).uniq
       end
 
       private
 
       def parse(body)
-        @versions = {}
+        versions = {}
         body.lines.reject do |line|
           line == "---\n"
         end.map do |line|
           if line =~ /\A(\S+) (.*)\|checksum:(.+)\n\z/
             version = $1
-            deps = $2.split(',').map { |dep| dep.split(':', 2) }
+            deps = $2.split(',').map do |dep|
+              name, requirements = dep.split(':', 2)
+              [name, requirements.split('&')]
+            end
             versions[version] = deps
           else
             raise "couldn't parse line: #{line}"
           end
         end
+        versions
       end
     end
 
@@ -52,7 +55,7 @@ module Galette
         next if all_gems.key?(name)
 
         gem = fetch_gem(name)
-        all_gems[name] = gem
+        all_gems[name] = gem.versions
         queue.concat(gem.all_dependant_gems)
       end
       all_gems
