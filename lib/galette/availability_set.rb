@@ -27,6 +27,19 @@ module Galette
       self.class.new(new_hash, new_valid)
     end
 
+    def |(other)
+      new_hash = {}
+
+      # We don't use the result of this hash, we're abusing merge to get a set
+      # of common keys and their values.
+      # Any requirement unique to one half of the union is dropped
+      @hash.merge(other.to_h) do |k, a, b|
+        new_hash[k] = a | b
+      end
+
+      self.class.new(new_hash)
+    end
+
     def to_h
       @hash
     end

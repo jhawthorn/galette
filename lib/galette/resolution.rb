@@ -23,7 +23,21 @@ module Galette
       end
 
       spec = @specifications[index]
-      availabilities.for(spec).versions.each do |version|
+
+      versions = availabilities.for(spec).versions
+
+      if versions.count > 1
+        # We have a few versions to compare, it might be a good time to try and
+        # prune our possible deps.
+
+        mask = availabilities.map do |a|
+          a.versions.map(&:requirements).inject(:|)
+        end.compact.inject(:&)
+
+        availabilities &= mask if mask
+      end
+
+      versions.each do |version|
         resolution = _resolve(availabilities & version.requirements, index + 1)
         return resolution if resolution
       end
@@ -31,7 +45,9 @@ module Galette
     end
 
     def resolve
-      _resolve(@availabilities).map do |availability|
+      result = _resolve(@availabilities)
+      raise "resolution impossible" if !result
+      result.map do |availability|
         # It should return exactly one version
         availability.versions[0]
       end.reject do |version|
