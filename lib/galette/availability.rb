@@ -7,6 +7,10 @@ module Galette
       @bitmap = bitmap
     end
 
+    def self.none(specification)
+      new(specification, 0)
+    end
+
     def &(other)
       self.class.new(specification, bitmap & other.bitmap)
     end

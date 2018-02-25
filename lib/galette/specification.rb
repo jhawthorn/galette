@@ -41,7 +41,7 @@ module Galette
         !version.none? && version_spec.satisfied_by?(Gem::Version.new(version.version))
       end.map do |version|
         version.to_availability
-      end.inject(:|)
+      end.inject(:|) || Availability.none(self)
     end
 
     def number_of_versions
