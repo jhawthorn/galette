@@ -35,7 +35,7 @@ module Galette
         # It should return exactly one version
         availability.versions[0]
       end.reject do |version|
-        version.none?
+        version.unneeded?
       end
     end
   end

@@ -95,7 +95,7 @@ module Galette
       # Second pass adds requirements to each version
       specifications.values.each do |specification|
         specification.versions.each do |version|
-          next if version.none?
+          next if version.unneeded?
           version_requirements = all_gems[specification.name][version.version]
           version_requirements.each do |requirement_name, requirement_version_spec|
             availability = specifications[requirement_name].requirement_semver(requirement_version_spec)

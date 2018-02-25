@@ -25,7 +25,7 @@ module Galette
 
     def initialize(name)
       @name = name
-      @versions = [Version.none(self)]
+      @versions = [Version.unneeded(self)]
       yield DSL.new(self)
 
       @versions.freeze
@@ -38,7 +38,7 @@ module Galette
     def requirement_semver(version_spec=nil)
       version_spec = Gem::Requirement.new(version_spec) unless version_spec.is_a?(Gem::Requirement)
       bitmap = versions.select do |version|
-        !version.none? && version_spec.satisfied_by?(Gem::Version.new(version.version))
+        !version.unneeded? && version_spec.satisfied_by?(Gem::Version.new(version.version))
       end.map do |version|
         version.to_availability
       end.inject(:|) || Availability.none(self)

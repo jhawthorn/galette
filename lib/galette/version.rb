@@ -10,7 +10,7 @@ module Galette
       @requirements = AvailabilitySet.new(requirements + [to_availability])
     end
 
-    def self.none(specification)
+    def self.unneeded(specification)
       new(specification, 1, nil, [])
     end
 
@@ -18,8 +18,8 @@ module Galette
       Galette::Availability.new(specification, id)
     end
 
-    # Does this "version" represent "none" ie. not required
-    def none?
+    # Does this "version" represent "unneeded" ie. not required
+    def unneeded?
       version == nil
     end
 
