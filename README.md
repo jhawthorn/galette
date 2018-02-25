@@ -6,21 +6,28 @@ Dependency resolution algorithm in ruby.
 
 It could be an alternative to [Bundler](https://github.com/bundler/bundler) and CocoaPods's [Molinillo](https://github.com/CocoaPods/Molinillo) algorithm. It's currently just an experiment.
 
-## Installation
+## Implementation
 
-Add this line to your application's Gemfile:
+Dependency resolution is a satisfiability problem. In the worst case we would
+have to test every possible combination of dependencies to try and find one
+which works. It's like a really big and hard sudoku.
 
-```ruby
-gem 'galette'
-```
+In practice, we can hopefully either find a solution quickly or discovering
+that the path we're considering is a dead end.
 
-And then execute:
+Galette stores dependencies as a bitmap, an integer where each binary digit
+represents a version. A dependency being unneeded is considered a special case
+at bit 0.
 
-    $ bundle
+The bitmap is a trade-off: It supports faster bulk operations, like computing
+the intersection of two dependencies, at the expense of iterating over versions
+being slower. Because we're using large arbitrary precision integers, these
+bulk operations are still `O(n)`, but they should be fairly quick and well
+optimized. Bitmap are space-efficient, allowing them to be duplicated and used
+immutably.
 
-Or install it yourself as:
-
-    $ gem install galette
+The entire graph of all gems that may be required are precomputed before
+resolution starts, which can be slow.
 
 ## Usage
 
@@ -67,6 +74,22 @@ Or install it yourself as:
  #<Galette::Version crass =1.0.3>]
 ```
 
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'galette'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install galette
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -77,6 +100,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/jhawthorn/galette. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+## Galette?
+
+Depending on where you are in the world, a galette is either a crêpe or a tart. Both are delicious.
 
 ## License
 
