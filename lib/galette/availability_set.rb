@@ -5,14 +5,13 @@ module Galette
     def initialize(availabilities=[], valid=nil)
       if availabilities.is_a?(Hash)
         @hash = availabilities
-        @valid = valid
       else
         @hash = {}.compare_by_identity
         availabilities.each do |availability|
           @hash[availability.specification] = availability
         end
-        @valid = !availabilities.any?(&:none?)
       end
+      @valid = valid.nil? ? !@hash.values.any?(&:none?) : valid
       @hash.freeze
     end
 
