@@ -29,6 +29,21 @@ immutably.
 The entire graph of all gems that may be required are precomputed before
 resolution starts, which can be slow.
 
+## vs. Bundler
+
+This is, for now, just a fun experiment, but it's inspired by the many problems
+I've had with bundler (and its Molinillo backend).
+For example
+[Bundler 1.15.x was broken](https://github.com/bundler/bundler/issues/5633)
+because of a bug in its backtracking (fixed in 1.16), and 
+I currently face a [Gemfile which takes 36 minutes to resolve dependencies](https://gist.github.com/jhawthorn/3f91285dd4302307244748eea9c7a634).
+
+Galette is able to resolve the equivalent of that difficult 36 minute Gemfile in under 13 seconds.
+I also believe bugs in backtracking would be less likely in Galette's architecture.
+
+Despite some encouraging results, Galette is slower than Bundler/Molinillo in a lot
+of cases. I'm also only 70% sure it works at all.
+
 ## Usage
 
 ```
