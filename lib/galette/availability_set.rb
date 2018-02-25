@@ -8,10 +8,10 @@ module Galette
       else
         @hash = {}.compare_by_identity
         availabilities.each do |availability|
-          @hash[availability.specification] = availability
+          @hash[availability.specification] = availability.bitmap
         end
       end
-      @valid = valid.nil? ? !@hash.values.any?(&:none?) : valid
+      @valid = valid.nil? ? !@hash.values.any?(&:zero?) : valid
       @hash.freeze
     end
 
@@ -20,7 +20,7 @@ module Galette
 
       new_hash = @hash.merge(other.to_h) do |_k, a, b|
         new_val = a & b
-        new_valid = false if new_val.none?
+        new_valid = false if new_val == 0
         new_val
       end
 
@@ -53,11 +53,13 @@ module Galette
     end
 
     def for(specification)
-      @hash[specification]
+      Availability.new(specification, @hash[specification])
     end
 
     def each(&block)
-      @hash.values.each(&block)
+      @hash.each_pair do |specification, bitmap|
+        yield Availability.new(specification, bitmap)
+      end
     end
   end
 end
