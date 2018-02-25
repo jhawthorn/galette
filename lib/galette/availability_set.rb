@@ -24,6 +24,10 @@ module Galette
       @hash
     end
 
+    def specifications
+      @hash.keys
+    end
+
     def valid?
       !@hash.values.any?(&:none?)
     end

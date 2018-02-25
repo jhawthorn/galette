@@ -2,7 +2,11 @@ require "galette/availability_set"
 
 module Galette
   class Resolution
-    def initialize(specifications, requirements)
+    def initialize(specifications, requirements=nil)
+      if requirements.nil?
+        requirements = specifications
+        specifications = requirements.specifications
+      end
       @specifications = specifications
       @availabilities =
         AvailabilitySet.new(specifications.map(&:full_availability))
