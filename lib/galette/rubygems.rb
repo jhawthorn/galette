@@ -7,11 +7,16 @@ module Galette
       attr_reader :name, :versions
 
       def initialize(name)
-        uri = URI.parse("https://index.rubygems.org/info/#{name}")
-        puts uri
-        response = Net::HTTP.get_response(uri)
-        raise "unable to fetch #{name}" unless response.is_a?(Net::HTTPSuccess)
-        @versions = parse(response.body)
+        cache_file_name = "cache/#{name}"
+        if !File.exists?(cache_file_name)
+          uri = URI.parse("https://index.rubygems.org/info/#{name}")
+          puts uri
+          response = Net::HTTP.get_response(uri)
+          raise "unable to fetch #{name}" unless response.is_a?(Net::HTTPSuccess)
+          File.write(cache_file_name, response.body)
+        end
+        body = File.read(cache_file_name)
+        @versions = parse(body)
       end
 
       def all_dependant_gems
