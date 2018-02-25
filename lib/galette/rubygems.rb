@@ -1,4 +1,5 @@
 require 'net/http'
+require 'fileutils'
 require 'uri'
 
 module Galette
@@ -7,7 +8,9 @@ module Galette
       attr_reader :name, :versions
 
       def initialize(name)
-        cache_file_name = "cache/#{name}"
+        cache_dir = File.join(Dir.home, ".cache/galette")
+        FileUtils.mkdir_p(cache_dir)
+        cache_file_name = File.join(cache_dir, name)
         if !File.exists?(cache_file_name)
           uri = URI.parse("https://index.rubygems.org/info/#{name}")
           puts uri
