@@ -2,6 +2,9 @@ require "galette/availability_set"
 
 module Galette
   class Resolution
+    class ImpossibleResolutionError < StandardError
+    end
+
     def initialize(specifications, requirements=nil)
       if requirements.nil?
         requirements = specifications
@@ -46,10 +49,13 @@ module Galette
 
     def resolve
       result = _resolve(@availabilities)
-      raise "resolution impossible" if !result
+      if !result
+        raise ImpossibleResolutionError, "impossible to resolve dependencies"
+      end
+
       result.map do |availability|
         # It should return exactly one version
-        availability.versions[0]
+        availability.version
       end.reject do |version|
         version.unneeded?
       end
