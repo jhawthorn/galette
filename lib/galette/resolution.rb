@@ -27,9 +27,7 @@ module Galette
 
       spec = @specifications[index]
 
-      versions = availabilities.for(spec).versions
-
-      if versions.count > 1
+      if availabilities.for(spec).multiple?
         # We have a few versions to compare, it might be a good time to try and
         # prune our possible deps.
 
@@ -40,6 +38,7 @@ module Galette
         availabilities &= mask if mask
       end
 
+      versions = availabilities.for(spec).versions
       versions.each do |version|
         resolution = _resolve(availabilities & version.requirements, index + 1)
         return resolution if resolution
