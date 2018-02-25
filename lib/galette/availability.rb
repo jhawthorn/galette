@@ -31,12 +31,11 @@ module Galette
     end
 
     def multiple?
-      !none? && !one?
+      bitmap.anybits?(bitmap - 1)
     end
 
     def one?
-      return false if none?
-      (bitmap & (bitmap - 1)) == 0
+      bitmap != 0 && !bitmap.anybits?(bitmap - 1)
     end
 
     def none?
