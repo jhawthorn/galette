@@ -10,12 +10,16 @@ module Galette
       @requirements = AvailabilitySet.new(requirements + [to_availability])
     end
 
+    def bitmap
+      @id
+    end
+
     def self.unneeded(specification)
       new(specification, 1, nil, [])
     end
 
     def to_availability
-      Galette::Availability.new(specification, id)
+      Galette::Availability.new(specification, bitmap)
     end
 
     # Does this "version" represent "unneeded" ie. not required
