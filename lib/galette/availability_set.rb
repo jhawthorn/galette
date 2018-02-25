@@ -28,13 +28,13 @@ module Galette
     end
 
     def |(other)
+      other_hash = other.to_h
       new_hash = {}
 
-      # We don't use the result of this hash, we're abusing merge to get a set
-      # of common keys and their values.
       # Any requirement unique to one half of the union is dropped
-      @hash.merge(other.to_h) do |k, a, b|
-        new_hash[k] = a | b
+      @hash.each_pair do |k, a|
+        next unless other_hash.has_key?(k)
+        new_hash[k] = a | other_hash[k]
       end
 
       self.class.new(new_hash)
