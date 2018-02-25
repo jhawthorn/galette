@@ -21,7 +21,7 @@ module Galette
 
     def versions
       @specification.versions.select do |version|
-        !(version.bitmap & bitmap).zero?
+        @bitmap[version.id] == 1
       end
     end
 
