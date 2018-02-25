@@ -1,5 +1,7 @@
 # Galette
 
+[![Build Status](https://travis-ci.org/jhawthorn/galette.svg?branch=master)](https://travis-ci.org/jhawthorn/galette)
+
 Dependency resolution algorithm in ruby.
 
 It could be an alternative to [Bundler](https://github.com/bundler/bundler) and CocoaPods's [Molinillo](https://github.com/CocoaPods/Molinillo) algorithm. It's currently just an experiment.
