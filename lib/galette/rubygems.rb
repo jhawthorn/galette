@@ -99,7 +99,7 @@ module Galette
           version_requirements = all_gems[specification.name][version.version]
           version_requirements.each do |requirement_name, requirement_version_spec|
             availability = specifications[requirement_name].requirement_semver(requirement_version_spec)
-            version.requirements &= availability
+            version.requirements &= Galette::AvailabilitySet.new([availability])
           end
         end
       end

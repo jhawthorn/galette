@@ -17,8 +17,6 @@ module Galette
     end
 
     def &(other)
-      return self & self.class.new([other]) if other.is_a?(Galette::Availability)
-
       new_valid = valid? && other.valid?
 
       new_hash = @hash.merge(other.to_h) do |_k, a, b|
