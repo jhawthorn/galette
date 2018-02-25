@@ -1,6 +1,7 @@
 module Galette
   class Version
     attr_reader :specification, :id, :version, :requirements
+    attr_writer :requirements
 
     def initialize(specification, id, version, requirements=[])
       @specification = specification

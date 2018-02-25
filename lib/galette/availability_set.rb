@@ -11,9 +11,17 @@ module Galette
     end
 
     def &(other)
+      return self & self.class.new([other]) if other.is_a?(Galette::Availability)
+
       new_hash = @hash.dup
+      # Fixme: can this be replaced by Hash#merge ?
       other.each do |availability|
-        new_hash[availability.specification] &= availability
+        specification = availability.specification
+        if @hash.key?(specification)
+          new_hash[specification] &= availability
+        else
+          new_hash[specification] = availability
+        end
       end
       self.class.new(new_hash.values)
     end
