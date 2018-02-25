@@ -11,11 +11,11 @@ module Galette
     end
 
     def bitmap
-      @id
+      1 << @id
     end
 
     def self.unneeded(specification)
-      new(specification, 1, nil, [])
+      new(specification, 0, nil, [])
     end
 
     def to_availability

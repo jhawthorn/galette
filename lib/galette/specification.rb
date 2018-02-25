@@ -14,7 +14,7 @@ module Galette
       def version(name, requirements: [])
         @specification.versions << Galette::Version.new(
           @specification,
-          1 << @specification.number_of_versions,
+          @specification.number_of_versions,
           name,
           requirements
         )
