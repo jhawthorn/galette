@@ -7,7 +7,7 @@ module Galette
         @hash = availabilities
         @valid = valid
       else
-        @hash = {}
+        @hash = {}.compare_by_identity
         availabilities.each do |availability|
           @hash[availability.specification] = availability
         end
