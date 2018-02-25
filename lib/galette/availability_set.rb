@@ -2,14 +2,16 @@ module Galette
   class AvailabilitySet
     include Enumerable
 
-    def initialize(availabilities=[])
+    def initialize(availabilities=[], valid=nil)
       if availabilities.is_a?(Hash)
         @hash = availabilities
+        @valid = valid
       else
         @hash = {}
         availabilities.each do |availability|
           @hash[availability.specification] = availability
         end
+        @valid = !availabilities.any?(&:none?)
       end
       @hash.freeze
     end
@@ -17,8 +19,12 @@ module Galette
     def &(other)
       return self & self.class.new([other]) if other.is_a?(Galette::Availability)
 
+      new_valid = valid? && other.valid?
+
       new_hash = @hash.merge(other.to_h) do |_k, a, b|
-        a & b
+        new_val = a & b
+        new_valid = false if new_val.none?
+        new_val
       end
 
       self.class.new(new_hash, new_valid)
@@ -33,7 +39,7 @@ module Galette
     end
 
     def valid?
-      !@hash.values.any?(&:none?)
+      @valid
     end
 
     def for(specification)
