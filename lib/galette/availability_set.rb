@@ -3,9 +3,13 @@ module Galette
     include Enumerable
 
     def initialize(availabilities=[])
-      @hash = {}
-      availabilities.each do |availability|
-        @hash[availability.specification] = availability
+      if availabilities.is_a?(Hash)
+        @hash = availabilities
+      else
+        @hash = {}
+        availabilities.each do |availability|
+          @hash[availability.specification] = availability
+        end
       end
       @hash.freeze
     end
@@ -17,7 +21,7 @@ module Galette
         a & b
       end
 
-      self.class.new(new_hash.values)
+      self.class.new(new_hash, new_valid)
     end
 
     def to_h
