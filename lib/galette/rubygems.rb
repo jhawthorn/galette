@@ -86,7 +86,9 @@ module Galette
       specifications = Hash[
         all_gems.map do |gem_name, gem_versions|
           specification = Galette::Specification.new(gem_name) do |spec|
-            gem_versions.keys.reverse.each do |version|
+            gem_versions.keys.sort_by do |version|
+              Gem::Version.new(version)
+            end.reverse_each do |version|
               spec.version version
             end
           end

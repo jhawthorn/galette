@@ -40,8 +40,9 @@ module Galette
       bitmap = versions.select do |version|
         !version.unneeded? && version_spec.satisfied_by?(Gem::Version.new(version.version))
       end.map do |version|
-        version.to_availability
-      end.inject(:|) || Availability.none(self)
+        version.bitmap
+      end.inject(:|) || 0
+      Availability.new(self, bitmap)
     end
 
     def number_of_versions
