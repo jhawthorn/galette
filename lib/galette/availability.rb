@@ -30,12 +30,18 @@ module Galette
       versions.first
     end
 
-    def multiple?
-      bitmap.anybits?(bitmap - 1)
+    if RUBY_VERSION >= "2.5"
+      def multiple?
+        bitmap.anybits?(bitmap - 1)
+      end
+    else
+      def multiple?
+        bitmap & (bitmap - 1) != 0
+      end
     end
 
     def one?
-      bitmap != 0 && !bitmap.anybits?(bitmap - 1)
+      !none? && !multiple?
     end
 
     def none?
