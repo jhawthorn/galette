@@ -97,13 +97,18 @@ module Galette
         end
       ]
 
+      requirement_cache = Hash.new do |h, k|
+        name, version_spec = k
+        h[k] = specifications[name].requirement_semver(version_spec)
+      end
+
       # Second pass adds requirements to each version
       specifications.values.each do |specification|
         specification.versions.each do |version|
           next if version.unneeded?
           version_requirements = all_gems[specification.name][version.version]
           version_requirements.each do |requirement_name, requirement_version_spec|
-            availability = specifications[requirement_name].requirement_semver(requirement_version_spec)
+            availability = requirement_cache[[requirement_name, requirement_version_spec]]
             version.requirements &= Galette::AvailabilitySet.new([availability])
           end
         end
@@ -113,7 +118,7 @@ module Galette
       Galette::AvailabilitySet.new(
         specifications.values.map do |specification|
           if requirements.has_key?(specification.name)
-            specification.requirement_semver(requirements[specification.name])
+            requirement_cache[[specification.name, requirements[specification.name]]]
           else
             specification.full_availability
           end
