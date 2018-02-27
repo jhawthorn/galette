@@ -82,7 +82,7 @@ module Galette
 
       all_gems = Hash[all_gems]
 
-      # Second pass sets up specifications with all versions but no requirements
+      # First pass sets up specifications with all versions but no requirements
       specifications = Hash[
         all_gems.map do |gem_name, gem_versions|
           specification = Galette::Specification.new(gem_name) do |spec|
