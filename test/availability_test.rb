@@ -12,7 +12,7 @@ class AvailabilityTest < Minitest::Test
   def test_no_availability
     availability = Galette::Availability.none(@spec)
 
-    assert_equal 0, availability.bitmap
+    assert_equal 0b0000, availability.bitmap
 
     assert availability.none?
     refute availability.one?
@@ -24,7 +24,7 @@ class AvailabilityTest < Minitest::Test
   end
 
   def test_single_availability
-    availability = Galette::Availability.new(@spec, 2)
+    availability = Galette::Availability.new(@spec, 0b0010)
 
     refute availability.none?
     assert availability.one?
@@ -35,7 +35,7 @@ class AvailabilityTest < Minitest::Test
   end
 
   def test_multiple_availability
-    availability = Galette::Availability.new(@spec, 6)
+    availability = Galette::Availability.new(@spec, 0b0110)
 
     refute availability.none?
     refute availability.one?
@@ -49,7 +49,7 @@ class AvailabilityTest < Minitest::Test
   end
 
   def test_unneeded
-    availability = Galette::Availability.new(@spec, 1)
+    availability = Galette::Availability.new(@spec, 0b0001)
 
     refute availability.none?
     assert availability.one?
@@ -60,25 +60,25 @@ class AvailabilityTest < Minitest::Test
   end
 
   def test_union
-    a1 = Galette::Availability.new(@spec, 3)
-    a2 = Galette::Availability.new(@spec, 6)
+    a1 = Galette::Availability.new(@spec, 0b0011)
+    a2 = Galette::Availability.new(@spec, 0b0110)
 
     combined = a1 | a2
 
     assert_equal @spec, combined.specification
-    assert_equal 7, combined.bitmap
+    assert_equal 0b0111, combined.bitmap
 
     assert_equal @spec.versions[0..2], combined.versions
   end
 
   def test_intersection
-    a1 = Galette::Availability.new(@spec, 3)
-    a2 = Galette::Availability.new(@spec, 6)
+    a1 = Galette::Availability.new(@spec, 0b0011)
+    a2 = Galette::Availability.new(@spec, 0b0110)
 
     combined = a1 & a2
 
     assert_equal @spec, combined.specification
-    assert_equal 2, combined.bitmap
+    assert_equal 0b0010, combined.bitmap
 
     assert_equal @spec.versions[1], combined.version
   end
