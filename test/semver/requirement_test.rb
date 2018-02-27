@@ -20,6 +20,11 @@ class SemverRequirementTest < Minitest::Test
     assert_equal 0b00100, requirement.bitmap
   end
 
+  def test_nonexistant_equality
+    requirement = Galette::Semver::Requirement.new(@spec, "= 6.6.6")
+    assert_equal 0b00000, requirement.bitmap
+  end
+
   def test_semver_squiggly
     requirement = Galette::Semver::Requirement.new(@spec, "~> 2.0")
     assert_equal 0b00110, requirement.bitmap
