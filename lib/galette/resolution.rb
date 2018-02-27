@@ -18,8 +18,6 @@ module Galette
     end
 
     def _resolve(availabilities, index=0)
-      return nil unless availabilities.valid?
-
       if index >= @specifications.length
         # We're all done! Hooray!
         return availabilities
@@ -37,6 +35,8 @@ module Galette
 
         availabilities &= mask if mask
       end
+
+      return nil unless availabilities.valid?
 
       versions = availabilities.for(spec).versions
       versions.each do |version|
