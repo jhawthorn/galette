@@ -28,12 +28,7 @@ module Galette
       if availabilities.for(spec).multiple?
         # We have a few versions to compare, it might be a good time to try and
         # prune our possible deps.
-
-        mask = availabilities.map do |a|
-          a.versions.map(&:requirements).inject(:|)
-        end.compact.inject(:&)
-
-        availabilities &= mask if mask
+        availabilities = reduce_availabilities(availabilities)
       end
 
       return nil unless availabilities.valid?
@@ -45,6 +40,14 @@ module Galette
         return resolution if resolution
       end
       nil
+    end
+
+    def reduce_availabilities(availabilities)
+      mask = availabilities.map do |a|
+        a.versions.map(&:requirements).inject(:|)
+      end.compact.inject(:&)
+
+      availabilities & mask
     end
 
     def resolve
