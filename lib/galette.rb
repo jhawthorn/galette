@@ -6,5 +6,7 @@ require "galette/availability_set"
 
 require "galette/rubygems"
 
+require "galette/semver/requirement"
+
 module Galette
 end

@@ -1,5 +1,6 @@
 require "rubygems/version"
 require "galette/availability"
+require "galette/semver/requirement"
 
 module Galette
   # A specification represents an immutable description of a library, and all
@@ -36,13 +37,7 @@ module Galette
     end
 
     def requirement_semver(version_spec=nil)
-      version_spec = Gem::Requirement.new(version_spec) unless version_spec.is_a?(Gem::Requirement)
-      bitmap = versions.select do |version|
-        !version.unneeded? && version_spec.satisfied_by?(Gem::Version.new(version.version))
-      end.map do |version|
-        version.bitmap
-      end.inject(:|) || 0
-      Availability.new(self, bitmap)
+      Galette::Semver::Requirement.new(self, version_spec).availability
     end
 
     def number_of_versions
