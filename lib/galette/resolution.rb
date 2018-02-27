@@ -38,8 +38,9 @@ module Galette
 
       return nil unless availabilities.valid?
 
-      versions = availabilities.for(spec).versions
-      versions.each do |version|
+      spec.versions.each do |version|
+        next unless availabilities.include?(version)
+
         resolution = _resolve(availabilities & version.requirements, index + 1)
         return resolution if resolution
       end

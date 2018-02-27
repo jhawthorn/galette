@@ -40,6 +40,10 @@ module Galette
       self.class.new(new_hash)
     end
 
+    def include?(version)
+      @hash[version.specification][version.id] == 1
+    end
+
     def to_h
       @hash
     end
