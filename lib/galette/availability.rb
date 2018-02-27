@@ -47,5 +47,9 @@ module Galette
     def none?
       bitmap == 0
     end
+
+    def includes_unneeded?
+      bitmap[0] == 1 && specification.versions[0].unneeded?
+    end
   end
 end

@@ -32,6 +32,7 @@ class AvailabilityTest < Minitest::Test
 
     assert_equal [@spec.versions[1]], availability.versions
     assert_equal "3", availability.version.version
+    refute availability.includes_unneeded?
   end
 
   def test_multiple_availability
@@ -57,6 +58,7 @@ class AvailabilityTest < Minitest::Test
 
     assert_equal 1, availability.versions.length
     assert availability.version.unneeded?
+    assert availability.includes_unneeded?
   end
 
   def test_union
