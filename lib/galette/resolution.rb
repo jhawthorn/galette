@@ -50,7 +50,11 @@ module Galette
         a.versions.map(&:requirements).inject(:|)
       end.compact.inject(:&)
 
-      availabilities & mask
+      if mask
+        availabilities & mask
+      else
+        availabilities
+      end
     end
 
     def resolve
