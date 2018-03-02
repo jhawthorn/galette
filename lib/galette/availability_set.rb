@@ -41,7 +41,8 @@ module Galette
     end
 
     def include?(version)
-      @hash[version.specification][version.id] == 1
+      bitmap = @hash[version.specification]
+      bitmap && bitmap[version.id] == 1
     end
 
     def to_h
