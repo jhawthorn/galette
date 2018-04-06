@@ -51,8 +51,8 @@ class AvailabilitySetTest < Minitest::Test
   end
 
   def test_intersect_same_spec
-    lhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
-    rhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1110)])
+    lhs = Galette::AvailabilitySet.new(@a => 0b1101)
+    rhs = Galette::AvailabilitySet.new(@a => 0b1110)
 
     combined = lhs & rhs
 
@@ -62,8 +62,8 @@ class AvailabilitySetTest < Minitest::Test
   end
 
   def test_intersect_different_specs
-    lhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
-    rhs = Galette::AvailabilitySet.new([Galette::Availability.new(@b, 0b1110)])
+    lhs = Galette::AvailabilitySet.new(@a => 0b1101)
+    rhs = Galette::AvailabilitySet.new(@b => 0b1110)
 
     combined = lhs & rhs
 
@@ -73,8 +73,8 @@ class AvailabilitySetTest < Minitest::Test
   end
 
   def test_intersect_to_invalid
-    lhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b0101)])
-    rhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1010)])
+    lhs = Galette::AvailabilitySet.new(@a => 0b0101)
+    rhs = Galette::AvailabilitySet.new(@a => 0b1010)
 
     combined = lhs & rhs
 
@@ -83,8 +83,8 @@ class AvailabilitySetTest < Minitest::Test
   end
 
   def test_union_same_spec
-    lhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
-    rhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1110)])
+    lhs = Galette::AvailabilitySet.new(@a => 0b1101)
+    rhs = Galette::AvailabilitySet.new(@a => 0b1110)
 
     combined = lhs | rhs
 
@@ -94,8 +94,8 @@ class AvailabilitySetTest < Minitest::Test
   end
 
   def test_union_different_specs
-    lhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
-    rhs = Galette::AvailabilitySet.new([Galette::Availability.new(@b, 0b1110)])
+    lhs = Galette::AvailabilitySet.new(@a => 0b1101)
+    rhs = Galette::AvailabilitySet.new(@b => 0b1110)
 
     combined = lhs | rhs
 
@@ -105,18 +105,18 @@ class AvailabilitySetTest < Minitest::Test
 
   def test_equality
     assert_equal(
-      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)]),
-      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
+      Galette::AvailabilitySet.new(@a => 0b1101),
+      Galette::AvailabilitySet.new(@a => 0b1101)
     )
 
     refute_equal(
-      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)]),
-      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1111)])
+      Galette::AvailabilitySet.new(@a => 0b1101),
+      Galette::AvailabilitySet.new(@a => 0b1111)
     )
 
     refute_equal(
-      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)]),
-      Galette::AvailabilitySet.new([Galette::Availability.new(@b, 0b1101)])
+      Galette::AvailabilitySet.new(@a => 0b1101),
+      Galette::AvailabilitySet.new(@b => 0b1101)
     )
   end
 end
