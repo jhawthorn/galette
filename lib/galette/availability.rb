@@ -51,5 +51,12 @@ module Galette
     def includes_unneeded?
       bitmap[0] == 1 && specification.versions[0].unneeded?
     end
+
+    def ==(other)
+      equal?(other) ||
+        other.instance_of?(Availability) &&
+        specification == other.specification &&
+        bitmap == other.bitmap
+    end
   end
 end

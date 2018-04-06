@@ -84,4 +84,23 @@ class AvailabilityTest < Minitest::Test
 
     assert_equal @spec.versions[1], combined.version
   end
+
+  def test_equality
+    assert_equal(
+      Galette::Availability.new(@spec, 0b0011),
+      Galette::Availability.new(@spec, 0b0011)
+    )
+
+    refute_equal(
+      Galette::Availability.new(@spec, 0b0011),
+      Galette::Availability.new(@spec, 0b0010)
+    )
+
+    spec1 = @spec
+    spec2 = @spec.dup
+    refute_equal(
+      Galette::Availability.new(spec1, 0b0011),
+      Galette::Availability.new(spec2, 0b0011)
+    )
+  end
 end
