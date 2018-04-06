@@ -36,6 +36,20 @@ class AvailabilitySetTest < Minitest::Test
     assert availability.valid?
   end
 
+  def test_initialize_with_hash
+    availability = Galette::AvailabilitySet.new(
+      @a => 0b0101,
+      @b => 0b1010
+    )
+
+    assert_equal({
+      @a => 0b0101,
+      @b => 0b1010
+    }.compare_by_identity, availability.to_h)
+    assert_equal [@a, @b], availability.specifications
+    assert availability.valid?
+  end
+
   def test_intersect_same_spec
     lhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
     rhs = Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1110)])

@@ -4,7 +4,7 @@ module Galette
 
     def initialize(availabilities=[], valid=nil)
       if availabilities.is_a?(Hash)
-        @hash = availabilities
+        @hash = availabilities.compare_by_identity
       else
         @hash = {}.compare_by_identity
         availabilities.each do |availability|
