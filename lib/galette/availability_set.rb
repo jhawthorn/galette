@@ -40,6 +40,12 @@ module Galette
       self.class.new(new_hash)
     end
 
+    def ==(other)
+      equal?(other) ||
+        other.instance_of?(AvailabilitySet) &&
+        to_h == other.to_h
+    end
+
     def include?(version)
       bitmap = @hash[version.specification]
       bitmap && bitmap[version.id] == 1

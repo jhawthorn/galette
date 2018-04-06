@@ -88,4 +88,21 @@ class AvailabilitySetTest < Minitest::Test
     assert_equal({}.compare_by_identity, combined.to_h)
     assert combined.valid?
   end
+
+  def test_equality
+    assert_equal(
+      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)]),
+      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)])
+    )
+
+    refute_equal(
+      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)]),
+      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1111)])
+    )
+
+    refute_equal(
+      Galette::AvailabilitySet.new([Galette::Availability.new(@a, 0b1101)]),
+      Galette::AvailabilitySet.new([Galette::Availability.new(@b, 0b1101)])
+    )
+  end
 end
