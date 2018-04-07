@@ -43,17 +43,24 @@ module Galette
     end
 
     def reduce_availabilities(availabilities)
-      mask = availabilities.map do |a|
-        # If it may be unneeded, it can't apply any requirements
-        next if a.includes_unneeded?
+      loop do
+        mask = availabilities.map do |a|
+          # If it may be unneeded, it can't apply any requirements
+          next if a.includes_unneeded?
 
-        a.versions.map(&:requirements).inject(:|)
-      end.compact.inject(:&)
+          a.versions.map(&:requirements).inject(:|)
+        end.compact.inject(:&)
 
-      if mask
-        availabilities & mask
-      else
-        availabilities
+        if mask
+          new_availabilities = availabilities & mask
+          if new_availabilities == availabilities
+            return availabilities
+          else
+            availabilities = new_availabilities
+          end
+        else
+          return availabilities
+        end
       end
     end
 
