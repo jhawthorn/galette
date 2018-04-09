@@ -18,6 +18,10 @@ module Galette
     end
 
     def _resolve(availabilities, index=0)
+      if !availabilities.valid?
+        return nil
+      end
+
       if index >= @specifications.length
         # We're all done! Hooray!
         return availabilities
