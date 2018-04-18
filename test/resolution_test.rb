@@ -105,4 +105,31 @@ class ResolutionTest < Minitest::Test
     assert_equal '2.0', resolution[1].version
     assert_equal 'rails', resolution[1].specification.name
   end
+
+  # Example borrowed from Natalie Weizenbaum's article on PubGrub
+  # https://medium.com/@nex3/pubgrub-2fb6470504f
+  def test_example_from_pubgrub_article
+    icons = Galette::Specification.new('icons') do |s|
+      s.version '2.0.0'
+      s.version '1.0.0'
+    end
+    dropdown = Galette::Specification.new('dropdown') do |s|
+      3.downto(0).each do |i|
+        s.version "2.#{i}.0", requirements: [icons.requirement_semver('~> 2.0')]
+      end
+      s.version '1.8.0', requirements: [icons.requirement_semver('~> 1.0')]
+    end
+    menu = Galette::Specification.new('menu') do |s|
+      5.downto(1).each do |i|
+        s.version '1.1.0', requirements: [dropdown.requirement_semver('~> 2.0')]
+      end
+      s.version '1.0.0'
+    end
+    requirements = [
+      menu.requirement_semver,
+      icons.requirement_semver('< 2')
+    ]
+    resolution = Galette::Resolution.new([icons, dropdown, menu], requirements).resolve
+
+  end
 end
