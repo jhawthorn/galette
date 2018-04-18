@@ -26,7 +26,13 @@ module Galette
     end
 
     def version
-      raise "unique version expected" unless one?
+      if !one?
+        if none?
+          raise "Called Availability#version with no available versions of #{specification.name}"
+        else # many
+          raise "Called Availability#version with multiple available versions of #{specification.name}"
+        end
+      end
       versions.first
     end
 
