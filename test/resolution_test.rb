@@ -106,6 +106,28 @@ class ResolutionTest < Minitest::Test
     assert_equal 'rails', resolution[1].specification.name
   end
 
+  def test_impossible_resolution
+    rack = Galette::Specification.new('rack') do |s|
+      s.version '2.0'
+      s.version '1.1'
+      s.version '1.0'
+    end
+    rails = Galette::Specification.new('rails') do |s|
+      s.version '2.0', requirements: [rack.requirement_semver('~> 1.0')]
+      s.version '1.0', requirements: [rack.requirement_semver('~> 1.0')]
+    end
+    requirements = [
+      rails.requirement_semver,
+      rack.requirement_semver('2.0')
+    ]
+
+    resolution = Galette::Resolution.new([rack, rails], requirements)
+
+    assert_raises Galette::Resolution::ImpossibleResolutionError do
+      resolution.resolve
+    end
+  end
+
   # Example borrowed from Natalie Weizenbaum's article on PubGrub
   # https://medium.com/@nex3/pubgrub-2fb6470504f
   def test_example_from_pubgrub_article
