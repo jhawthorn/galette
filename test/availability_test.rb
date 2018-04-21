@@ -18,7 +18,7 @@ class AvailabilityTest < Minitest::Test
     refute availability.one?
     refute availability.multiple?
 
-    assert_raises do
+    assert_raises RuntimeError do
       availability.version
     end
   end
@@ -44,7 +44,7 @@ class AvailabilityTest < Minitest::Test
 
     assert_equal [@spec.versions[1], @spec.versions[2]], availability.versions
 
-    assert_raises do
+    assert_raises RuntimeError do
       availability.version
     end
   end
