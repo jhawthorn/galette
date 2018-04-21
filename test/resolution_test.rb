@@ -121,7 +121,7 @@ class ResolutionTest < Minitest::Test
     end
     menu = Galette::Specification.new('menu') do |s|
       5.downto(1).each do |i|
-        s.version '1.1.0', requirements: [dropdown.requirement_semver('~> 2.0')]
+        s.version "1.#{i}.0", requirements: [dropdown.requirement_semver('~> 2.0')]
       end
       s.version '1.0.0'
     end
@@ -130,6 +130,5 @@ class ResolutionTest < Minitest::Test
       icons.requirement_semver('< 2')
     ]
     resolution = Galette::Resolution.new([icons, dropdown, menu], requirements).resolve
-
   end
 end
