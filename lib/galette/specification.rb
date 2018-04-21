@@ -43,5 +43,9 @@ module Galette
     def number_of_versions
       versions.length
     end
+
+    def inspect
+      "#<#{self.class} #{name} (#{number_of_versions} versions)>"
+    end
   end
 end

@@ -64,5 +64,9 @@ module Galette
         specification == other.specification &&
         bitmap == other.bitmap
     end
+
+    def inspect
+      "#<#{self.class} #{specification.name} (#{versions.count}/#{specification.number_of_versions})>"
+    end
   end
 end
