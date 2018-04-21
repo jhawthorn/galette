@@ -120,3 +120,9 @@ Depending on where you are in the world, a galette is either a crêpe or a tart.
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+# References
+
+* PubGrub: Next-Generation Version Solving
+  * https://medium.com/@nex3/pubgrub-2fb6470504f
+  * https://github.com/dart-lang/pub/blob/master/doc/solver.md
+* [Molinillo](https://github.com/CocoaPods/Molinillo), Bundler and CocoaPods' solver
