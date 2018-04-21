@@ -27,8 +27,13 @@ module Galette
       version == nil
     end
 
+    # The version as a human-readable string for display
+    def version_name
+      version ? "=" + version : "UNNEEDED"
+    end
+
     def inspect
-      "#<#{self.class} #{specification.name} #{version ? "=" + version : "UNNEEDED"}>"
+      "#<#{self.class} #{specification.name} #{version_name}>"
     end
   end
 end
