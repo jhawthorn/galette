@@ -37,6 +37,7 @@ module Galette
     end
 
     def requirement_semver(version_spec=nil)
+      version_spec = nil if version_spec == ""
       Galette::Semver::Requirement.new(self, version_spec).availability
     end
 
