@@ -42,6 +42,9 @@ module Galette
 
         resolution = _resolve(availabilities & version.requirements, index + 1)
         return resolution if resolution
+
+        availabilities = availabilities - version
+        availabilities = reduce_availabilities(availabilities)
       end
       nil
     end

@@ -40,6 +40,21 @@ module Galette
       self.class.new(new_hash)
     end
 
+    def -(other)
+      if other.is_a?(Version)
+        version = other
+        if !include?(version)
+          raise "tried to remove a version from an AvailabiltySet which didn't include it"
+        end
+
+        new_hash = @hash.dup
+        new_hash[version.specification] ^= version.bitmap
+        self.class.new(new_hash)
+      else
+        raise TypeError, "#{self.class}#- not yet implemented for #{other.class}"
+      end
+    end
+
     def ==(other)
       equal?(other) ||
         other.instance_of?(AvailabilitySet) &&
