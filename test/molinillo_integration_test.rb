@@ -63,7 +63,11 @@ describe "Molinillo Integration Test" do
         specifications[name].requirement_semver(req)
       end
 
-      resolution = Galette::Resolution.new(specifications.values, requested)
+      specifications = requested.flat_map do |availability|
+        availability.specification.all_dependency_specifications
+      end.uniq
+
+      resolution = Galette::Resolution.new(specifications, requested)
 
       puts "solving..."
       if case_data['conflicts']
