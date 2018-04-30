@@ -56,6 +56,11 @@ describe "Molinillo Integration Test" do
 
       specifications = index_to_specifications(index_data)
 
+      # Default to an empty specification
+      specifications = Hash.new do |h, name|
+        h[name] = Galette::Specification.new(name) { }
+      end.merge!(specifications)
+
       requested = requested.map do |name, req|
         specifications[name].requirement_semver(req)
       end
