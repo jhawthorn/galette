@@ -71,8 +71,10 @@ describe "Molinillo Integration Test" do
 
       resolution = Galette::Resolution.new(specifications, requested)
 
-      if case_data['conflicts']
-        resolution.resolve
+      if !case_data['conflicts'].empty?
+        assert_raises Galette::Resolution::ImpossibleResolutionError do
+          resolution.resolve
+        end
       else
         expected = case_data["resolved"]
         actual = resolution.resolve
