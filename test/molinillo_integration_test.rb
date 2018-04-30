@@ -46,9 +46,6 @@ describe "Molinillo Integration Test" do
   Dir[File.join(CASES_DIR, '*.json')].each do |case_file|
     case_data = JSON.parse(File.read(case_file))
 
-    # FIXME
-    next unless case_data['base'].empty?
-
     it case_data["name"] do
       requested = case_data["requested"]
       index_name = case_data["index"] || "awesome"
@@ -61,8 +58,19 @@ describe "Molinillo Integration Test" do
         h[name] = Galette::Specification.new(name) { }
       end.merge!(specifications)
 
-      requested = requested.map do |name, req|
-        specifications[name].requirement_semver(req)
+      requested = Galette::AvailabilitySet.new
+
+      case_data["requested"].each do |name, version_spec|
+        # Yeah... I don't know why they did this either
+        name = name.delete("\x01")
+
+        requested &= specifications[name].requirement_semver(version_spec)
+      end
+
+      case_data['base'].each do |base|
+        name = base['name']
+        version_spec = base['version']
+        requested &= specifications[name].requirement_semver(version_spec)
       end
 
       specifications = requested.flat_map do |availability|
