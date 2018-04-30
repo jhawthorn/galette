@@ -50,15 +50,12 @@ describe "Molinillo Integration Test" do
     next unless case_data['base'].empty?
 
     it case_data["name"] do
-      puts case_data["name"]
       requested = case_data["requested"]
       index_name = case_data["index"] || "awesome"
       index_data = JSON.parse(File.read(File.join(INDEX_DIR, "#{index_name}.json")))
 
-      puts "loading index..."
       specifications = index_to_specifications(index_data)
 
-      puts "calculating requested gems..."
       requested = requested.map do |name, req|
         specifications[name].requirement_semver(req)
       end
@@ -69,7 +66,6 @@ describe "Molinillo Integration Test" do
 
       resolution = Galette::Resolution.new(specifications, requested)
 
-      puts "solving..."
       if case_data['conflicts']
         resolution.resolve
       else
