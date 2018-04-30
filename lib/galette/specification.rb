@@ -48,5 +48,20 @@ module Galette
     def inspect
       "#<#{self.class} #{name} (#{number_of_versions} versions)>"
     end
+
+    def all_dependency_specifications
+      queue = [self]
+      all_specifications = Set.new
+
+      while !queue.empty?
+        specification = queue.shift
+        next if all_specifications.include?(specification)
+        all_specifications.add(specification)
+
+        queue.concat specification.versions.map(&:requirements).flat_map(&:specifications).uniq
+      end
+
+      all_specifications.to_a
+    end
   end
 end
